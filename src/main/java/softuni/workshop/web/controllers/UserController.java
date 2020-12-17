@@ -30,11 +30,11 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     public ModelAndView registerConfirm(UserRegisterModel userRegisterModel){
-        if (!userRegisterModel.getPassword().equals(userRegisterModel.getConfirmPassword())){
+        if (!userRegisterModel.getPassword()
+                .equals(userRegisterModel.getConfirmPassword())){
             return super.redirect("/users/register");
         }
         this.userService.registerUser(userRegisterModel);
-
         return super.redirect("/users/login");
     }
 }

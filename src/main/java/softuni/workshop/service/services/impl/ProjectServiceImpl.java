@@ -1,11 +1,20 @@
 package softuni.workshop.service.services.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import softuni.workshop.data.repositories.ProjectRepository;
 import softuni.workshop.service.services.ProjectService;
 
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
+
+    private final ProjectRepository projectRepository;
+
+    @Autowired
+    public ProjectServiceImpl(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
 
     @Override
     public void importProjects(){
@@ -14,8 +23,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public boolean areImported() {
-        //TODO check if repository has any records
-       return true;
+       return this.projectRepository.count() > 0;
     }
 
     @Override
