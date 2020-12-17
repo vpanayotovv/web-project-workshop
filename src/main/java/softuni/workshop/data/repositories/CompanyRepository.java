@@ -6,4 +6,5 @@ import softuni.workshop.data.entities.Company;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company,Integer> {
+    Company findByName(String name);
 }
