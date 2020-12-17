@@ -1,6 +1,4 @@
 package softuni.workshop.data.repositories;
 
-
-public interface CompanyRepository {
-    //TODO
+public interface CompanyRepository{
 }

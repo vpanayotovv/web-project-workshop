@@ -1,7 +1,9 @@
 package softuni.workshop.web.controllers;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
+@Controller
 public abstract class BaseController {
 
     public ModelAndView view(String viewName, ModelAndView modelAndView){
