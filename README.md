@@ -1,6 +1,8 @@
 Simple Web project with:
 `MySQL database`
 `Spring Boot`
+`Spring MVC`
+`JPA`
 `Spring Security`
 `Thymeleaf`
 `Bootstrap`
