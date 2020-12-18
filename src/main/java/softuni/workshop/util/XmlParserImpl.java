@@ -1,6 +1,7 @@
 package softuni.workshop.util;
 
 import org.springframework.stereotype.Component;
+import softuni.workshop.error.CustomXmlException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -11,10 +12,15 @@ import java.io.File;
 public class XmlParserImpl implements XmlParser {
     @Override
     @SuppressWarnings(value = "unchecked")
-    public <O> O parseXml(Class<O> objectClass, String path) throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(objectClass);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
+    public <O> O parseXml(Class<O> objectClass, String path){
+        try {
 
-        return (O) unmarshaller.unmarshal(new File(path));
+            JAXBContext context = JAXBContext.newInstance(objectClass);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            return (O) unmarshaller.unmarshal(new File(path));
+        }catch (JAXBException ex){
+            throw new CustomXmlException(ex.getMessage() , ex);
+        }
+
     }
 }

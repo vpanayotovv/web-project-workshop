@@ -31,7 +31,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void importCompanies() throws JAXBException, FileNotFoundException {
+    public void importCompanies(){
         CompanyRootSeedDto companyRootSeedDto = this.xmlParser.parseXml(
                 CompanyRootSeedDto.class, COMPANIES_PATH
         );
