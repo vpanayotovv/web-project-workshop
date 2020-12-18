@@ -46,39 +46,47 @@ public class ImportController extends BaseController {
     @GetMapping("/companies")
     public ModelAndView companies() throws IOException {
         ModelAndView modelAndView = super.view("xml/import-companies");
-        modelAndView.addObject("companies",this.companyService.readCompaniesXmlFile());
+        modelAndView.addObject("companies", this.companyService.readCompaniesXmlFile());
         return modelAndView;
     }
 
     @PostMapping("/companies")
     public ModelAndView companiesConfirm() throws JAXBException, FileNotFoundException {
         this.companyService.importCompanies();
-        return super.redirect("/import/xml");
+        return super.redirect(areAllImported() ? "/home" : "/import/xml");
     }
 
     @GetMapping("/projects")
-    public ModelAndView projects(){
+    public ModelAndView projects() {
         ModelAndView modelAndView = super.view("xml/import-projects");
-        modelAndView.addObject("projects",this.projectService.readProjectsXmlFile());
+        modelAndView.addObject("projects", this.projectService.readProjectsXmlFile());
         return modelAndView;
     }
 
     @PostMapping("/projects")
-    public ModelAndView projectsConfirm(){
+    public ModelAndView projectsConfirm() {
         this.projectService.importProjects();
-        return super.redirect("/import/xml");
+        return super.redirect(areAllImported() ? "/home" : "/import/xml");
     }
 
     @GetMapping("/employees")
-    public ModelAndView employees(){
+    public ModelAndView employees() {
         ModelAndView modelAndView = super.view("xml/import-employees");
-        modelAndView.addObject("employees",this.employeeService.readEmployeesXmlFile());
+        modelAndView.addObject("employees", this.employeeService.readEmployeesXmlFile());
         return modelAndView;
     }
 
     @PostMapping("/employees")
     public ModelAndView employeesConfirm() {
         this.employeeService.importEmployees();
-        return super.redirect("/import/xml");
+        return super.redirect(areAllImported() ? "/home" : "/import/xml");
     }
+
+    private boolean areAllImported() {
+        return this.companyService.areImported() &&
+                this.projectService.areImported() &&
+                this.employeeService.areImported();
+    }
+
+
 }

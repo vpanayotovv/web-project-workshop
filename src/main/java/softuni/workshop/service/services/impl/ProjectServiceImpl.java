@@ -41,8 +41,13 @@ public class ProjectServiceImpl implements ProjectService {
         for (ProjectSeedDto project : projectRootSeedDto.getProjects()) {
             Project mappedProject = this.modelMapper.map(project, Project.class);
             mappedProject.setCompany(
-                    this.companyRepository.findByName(mappedProject.getCompany().getName()).orElseThrow(() ->
-                            new EntityNotFoundException(String.format("Project %s not found.", project.getCompany().getName()))
+                    this.companyRepository.findByName(
+                            mappedProject.getCompany().getName()).orElseThrow(() ->
+                            new EntityNotFoundException(
+                                    String.format(
+                                            "Project %s not found.", project.getCompany().getName()
+                                    )
+                            )
                     )
             );
             this.projectRepository.saveAndFlush(mappedProject);
@@ -58,8 +63,8 @@ public class ProjectServiceImpl implements ProjectService {
     public String readProjectsXmlFile() {
         try {
             return Files.readString(Path.of(PROJECT_PATH));
-        }catch (IOException ex){
-            throw new CustomXmlException(ex.getMessage(),ex);
+        } catch (IOException ex) {
+            throw new CustomXmlException(ex.getMessage(), ex);
         }
     }
 
