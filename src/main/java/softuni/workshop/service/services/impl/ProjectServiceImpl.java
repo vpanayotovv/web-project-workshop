@@ -16,6 +16,8 @@ import softuni.workshop.util.XmlParser;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -70,7 +72,19 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public String exportFinishedProjects() {
-        //TODO export finished projects
-        return null;
+        StringBuilder sb = new StringBuilder();
+        getAllFinishedProjects().forEach(proj ->
+                sb.append("Project Name: ").append(proj.getName())
+                        .append("\n     Description: ").append(proj.getDescription())
+                        .append("\n     ").append(proj.getPayment())
+                        .append("\n")
+        );
+        return sb.toString();
+    }
+
+    private List<ProjectSeedDto> getAllFinishedProjects(){
+        return this.projectRepository.findAllByFinished().stream()
+                .map(p -> this.modelMapper.map(p,ProjectSeedDto.class))
+                .collect(Collectors.toList());
     }
 }

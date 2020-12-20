@@ -21,6 +21,7 @@ public class XmlParserImpl implements XmlParser {
         }catch (JAXBException ex){
             throw new CustomXmlException(ex.getMessage() , ex);
         }
-
     }
+
+
 }

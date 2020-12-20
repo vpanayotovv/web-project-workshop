@@ -19,6 +19,8 @@ import softuni.workshop.util.XmlParser;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -47,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (EmployeeSeedDto employee : employeeRootSeedDto.getEmployees()) {
             Employee mappedEmployee = this.modelMapper.map(employee, Employee.class);
             Company company = this.companyRepository.findByName(employee.getProject().getCompany().getName()).orElseThrow(
-                    () -> new EntityNotFoundException(String.format("Company %s not found",employee.getProject().getCompany().getName()))
+                    () -> new EntityNotFoundException(String.format("Company %s not found", employee.getProject().getCompany().getName()))
             );
 
             Project project = this.projectRepository.findByName(employee.getProject().getName()).orElseThrow(
@@ -61,21 +63,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean areImported() {
-       return this.employeeRepository.count() > 0;
+        return this.employeeRepository.count() > 0;
     }
 
     @Override
     public String readEmployeesXmlFile() {
         try {
             return Files.readString(Path.of(EMPLOYEE_PATH));
-        }catch (IOException ex){
-            throw new CustomXmlException(ex.getMessage(),ex);
+        } catch (IOException ex) {
+            throw new CustomXmlException(ex.getMessage(), ex);
         }
     }
 
     @Override
     public String exportEmployeesWithAgeAbove() {
-        //TODO export employees with age above 25
-        return null;
+        StringBuilder sb = new StringBuilder();
+        getEmployeesAbove().forEach(e ->
+                sb.append("Name: ").append(e.getFirstName()).append(" ").append(e.getLastName())
+                        .append("\n     Age: ").append(e.getAge())
+                        .append("\n     Project Name: ").append(e.getProject().getName())
+                        .append("\n")
+        );
+        return sb.toString();
+    }
+
+
+    private List<EmployeeSeedDto> getEmployeesAbove() {
+        return this.employeeRepository.findAllByAgeIsGreaterThan(25)
+                .stream()
+                .map(e -> this.modelMapper.map(e, EmployeeSeedDto.class))
+                .collect(Collectors.toList());
     }
 }

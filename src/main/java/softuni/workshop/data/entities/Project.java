@@ -20,7 +20,7 @@ public class Project extends BaseEntity {
     @Column(nullable = false)
     private String description;
 
-    @Column
+    @Column(name = "is_finished")
     private boolean isFinished;
 
     @Column(nullable = false)
